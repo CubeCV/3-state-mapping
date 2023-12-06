@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import sys
 
+
+DEBUG = True
+
 original = cv2.imread(f"../images/isolated/cube{x[1] if len(x:=sys.argv) > 1 else 0}.jpg")
 
 img = original.copy()
@@ -11,9 +14,9 @@ class Colour:
     ranges = {
         "blue": [166, 280],
         "green": [71, 165],
-        "orange": [6, 20],
+        "orange": [6, 42],
         "red": [281, 5],
-        "yellow": [21, 70],
+        "yellow": [43, 70],
         "white": [-1, -1],
     }
 
@@ -27,13 +30,32 @@ class Colour:
 
     @staticmethod
     def determine_colour(hue) -> int:  # returns the index of colour
-        for i, c in enumerate(ranges):
-            if ranges[c][0] <= hue <= ranges[c][1]:
+        for i, c in enumerate(Colour.ranges):
+            if Colour.ranges[c][0] <= hue <= Colour.ranges[c][1]:
                 return c
 
 
 def find_colour_at(pos: tuple[int, int], img) -> Colour:
-    img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    print(img_hsv[pos[0], pos[1]])
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    x = hsv[pos[1], pos[0]]
+    hue = x[0] * 2  # see https://answers.opencv.org/question/203501/cv2color_rgb2hsv-is-not-giving-correct-hsv-values/
 
-    # Colour.determine_colour()
+    colour = Colour.determine_colour(hue)
+
+    if DEBUG:
+        print(x)
+        print(hue)
+        print(colour)
+
+        img = cv2.circle(img, pos, 4, (255, 255, 255), 4)
+        cv2.imshow("plotted", img)
+
+
+find_colour_at((1365, 1045), img)  # orange
+find_colour_at((1555, 1165), img)  # green
+find_colour_at((1729, 871), img)  # blue
+
+
+# INFO: keep windows
+cv2.waitKey(0)
+cv2.destroyAllWindows()
