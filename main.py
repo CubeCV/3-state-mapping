@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import sys
 
-original = cv2.imread(f"./data/cube{x[1] if len(x:=sys.argv) > 1 else 0}.jpg")
+original = cv2.imread(f"../images/isolated/cube{x[1] if len(x:=sys.argv) > 1 else 0}.jpg")
 
 img = original.copy()
 
