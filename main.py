@@ -5,10 +5,6 @@ import sys
 
 DEBUG = True
 
-original = cv2.imread(f"../images/isolated/cube{x[1] if len(x:=sys.argv) > 1 else 0}.jpg")
-
-img = original.copy()
-
 
 class Colour:
     ranges = {
